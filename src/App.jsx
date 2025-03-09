@@ -3,6 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 
+// You can also create an axios instance here if you want
+import axios from "axios";
+import { BASE_URL } from "./config";
+
+// Create axios instance with default config
+axios.defaults.baseURL = BASE_URL;
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
 

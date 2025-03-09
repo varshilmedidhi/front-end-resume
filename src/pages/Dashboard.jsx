@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const BASE_URL = "https://backend-resume-production.up.railway.app";
+
 const Dashboard = ({ token }) => {
   const [activeTab, setActiveTab] = useState("view"); // 'view' or 'add'
   const [projects, setProjects] = useState([]);
@@ -32,10 +34,10 @@ const Dashboard = ({ token }) => {
     setError(null);
     try {
       const [projRes, workRes] = await Promise.all([
-        axios.get("http://localhost:5500/api/projects", {
+        axios.get(`${BASE_URL}/api/projects`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        axios.get("http://localhost:5500/api/work-experience", {
+        axios.get(`${BASE_URL}/api/work-experience`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -56,7 +58,7 @@ const Dashboard = ({ token }) => {
   const handleProjectSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5500/api/projects", newProject, {
+      await axios.post(`${BASE_URL}/api/projects`, newProject, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNewProject({
@@ -78,13 +80,9 @@ const Dashboard = ({ token }) => {
   const handleWorkExpSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "http://localhost:5500/api/work-experience",
-        newWorkExp,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.post(`${BASE_URL}/api/work-experience`, newWorkExp, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setNewWorkExp({
         company: "",
         role: "",
@@ -105,7 +103,7 @@ const Dashboard = ({ token }) => {
   const handleDeleteProject = async (projectId) => {
     if (window.confirm("Are you sure you want to delete this project?")) {
       try {
-        await axios.delete(`http://localhost:5500/api/projects/${projectId}`, {
+        await axios.delete(`${BASE_URL}/api/projects/${projectId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchData(); // Refresh the list
@@ -120,12 +118,9 @@ const Dashboard = ({ token }) => {
       window.confirm("Are you sure you want to delete this work experience?")
     ) {
       try {
-        await axios.delete(
-          `http://localhost:5500/api/work-experience/${workExpId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        await axios.delete(`${BASE_URL}/api/work-experience/${workExpId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         fetchData(); // Refresh the list
       } catch (error) {
         setError(
